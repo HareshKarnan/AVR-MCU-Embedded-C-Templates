@@ -1,0 +1,47 @@
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+
+void Init_ADC()             //initialises the ADC peripheral 
+{
+ADMUX=(1<<REFS0);                         
+ADCSRA=(1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);  // prescalar division factor =128
+}
+
+uint16_t Read_ADC(uint16_t ch)     //function to read the ADC value from the adc pins . 
+{
+   
+   ch=ch&0b00000111;
+
+   ADMUX|=ch;
+
+   ADCSRA|=(1<<ADSC);
+
+   while(!(ADCSRA & (1<<ADIF)));
+
+   ADCSRA|=(1<<ADIF);
+
+   return(ADC);
+}
+
+void main()
+{
+   
+   uint16_t val;
+ 
+
+ //Initialize the ADC Module
+
+   Init_ADC();
+
+
+ while(1)
+{
+    val=Read_ADC(0); 
+   //in ' val ' the ADC value is stored . 
+_delay_ms(300);
+     
+}
+
+}
